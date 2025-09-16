@@ -1,6 +1,7 @@
-function Node(data, next = null) {
+function Node(key, value, next = null) {
   return {
-    data,
+    key,
+    value,
     next,
   };
 }
@@ -9,12 +10,12 @@ function LinkedList() {
   let head = null;
   let size = 0;
 
-  function append(value) {
+  function append(key, value) {
     if (head == null) {
-      prepend(value);
+      prepend(key, value);
       return;
     }
-    let node = Node(value);
+    let node = Node(key, value);
     let current = head;
     while (current.next != null) {
       current = current.next;
@@ -23,8 +24,8 @@ function LinkedList() {
     size++;
   }
 
-  function prepend(value) {
-    const node = Node(value);
+  function prepend(key, value) {
+    const node = Node(key, value);
     if (head == null) {
       head = node;
     } else {
@@ -55,23 +56,23 @@ function LinkedList() {
     }
   }
 
-  function at(index) {
-    if (index == 0) {
-      return head.value;
-    }
+  // function at(index) {
+  //   if (index == 0) {
+  //     return `key: ${head.key}, value: ${head.value}`;
+  //   }
 
-    if (index >= size) {
-      return null;
-    }
+  //   if (index >= size) {
+  //     return null;
+  //   }
 
-    let current = head;
-    let count = 0;
-    while (count < index) {
-      current = current.next;
-      count++;
-    }
-    return current.value;
-  }
+  //   let current = head;
+  //   let count = 0;
+  //   while (count < index) {
+  //     current = current.next;
+  //     count++;
+  //   }
+  //   return `key: ${current.key}, value: ${current.value}`;
+  // }
 
   function pop() {
     if (head == null) {
@@ -97,25 +98,25 @@ function LinkedList() {
     return current;
   }
 
-  function contains(value) {
+  function contains(key) {
     if (head == null) {
       return false;
     }
     let current = head;
-    while (current.value !== value && current.next != null) {
+    while (current.key !== key && current.next != null) {
       current = current.next;
     }
-    if (current.value == value) {
+    if (current.key == key) {
       return true;
     }
     return false;
   }
 
-  function find(value) {
+  function find(key) {
     let current = head;
     let index = 0;
     while (current) {
-      if (current.value == value) {
+      if (current.key == key) {
         return index;
       }
       current = current.next;
@@ -141,60 +142,88 @@ function LinkedList() {
     return string;
   }
 
-  function insertAt(value, index) {
-    if (index == 0) {
-      prepend(value);
-      return;
-    } else if (index == size) {
-      append(value);
-      return;
-    } else if (index > size) {
-      return "index out of range";
-    } else {
-      const node = Node(value);
-      let current = head;
-      let previous;
-      let count = 0;
+  // function insertAt(value, index) {
+  //   if (index == 0) {
+  //     prepend(value);
+  //     return;
+  //   } else if (index == size) {
+  //     append(value);
+  //     return;
+  //   } else if (index > size) {
+  //     return "index out of range";
+  //   } else {
+  //     const node = Node(value);
+  //     let current = head;
+  //     let previous;
+  //     let count = 0;
 
-      while (count < index) {
-        previous = current;
+  //     while (count < index) {
+  //       previous = current;
+  //       current = current.next;
+  //       count++;
+  //     }
+
+  //     previous.next = node;
+  //     node.next = current;
+  //     size++;
+  //   }
+  // }
+
+  // function removeAt(index) {
+  //   if (index >= size || index < 0) {
+  //     return "index out of range";
+  //   }
+
+  //   let current = head;
+  //   let previous;
+  //   let count = 0;
+
+  //   if (index == 0 && head != null) {
+  //     head = current.next;
+  //     size--;
+  //     return;
+  //   }
+
+  //   if (index == 0 && head == null) {
+  //     return "list is empty";
+  //   }
+
+  //   while (count < index) {
+  //     previous = current;
+  //     current = current.next;
+  //     count++;
+  //   }
+
+  //   previous.next = current.next;
+  //   size--;
+  // }
+
+  function update(key, newValue) {
+    if (head.key == key) {
+      head.value = newValue;
+    } else {
+      let current = head;
+      while (current.key !== key) {
         current = current.next;
-        count++;
       }
 
-      previous.next = node;
-      node.next = current;
-      size++;
+      current.value = newValue;
     }
+
+    return "Update successful!";
   }
 
-  function removeAt(index) {
-    if (index >= size || index < 0) {
-      return "index out of range";
-    }
-
+  function getValue(key) {
     let current = head;
-    let previous;
-    let count = 0;
-
-    if (index == 0 && head != null) {
-      head = current.next;
-      size--;
-      return;
-    }
-
-    if (index == 0 && head == null) {
-      return "list is empty";
-    }
-
-    while (count < index) {
-      previous = current;
+    while (current.key != key && current.next != null) {
       current = current.next;
-      count++;
     }
 
-    previous.next = current.next;
-    size--;
+    if (current.key == key) {
+      return current.value;
+    }
+
+    return null;
   }
 
   return {
@@ -203,13 +232,15 @@ function LinkedList() {
     getSize,
     getHead,
     getTail,
-    at,
+    // at,
     pop,
     contains,
     find,
     toString,
-    insertAt,
-    removeAt,
+    // insertAt,
+    // removeAt,
+    update,
+    getValue,
   };
 }
 
