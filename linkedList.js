@@ -226,6 +226,22 @@ function LinkedList() {
     return null;
   }
 
+  function removeNode(key) {
+    if (head.key == key) {
+      head = head.next;
+    } else {
+      let current = head;
+      let previous;
+
+      while (current.key != key) {
+        previous = current;
+        current.next = current;
+      }
+
+      previous.next = current.next;
+    }
+  }
+
   return {
     append,
     prepend,
@@ -241,6 +257,7 @@ function LinkedList() {
     // removeAt,
     update,
     getValue,
+    removeNode,
   };
 }
 

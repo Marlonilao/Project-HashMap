@@ -57,10 +57,48 @@ function HashMap(size) {
     }
   }
 
+  function remove(key) {
+    const index = hash(key);
+    if (buckets[index] != undefined) {
+      if (buckets[index].contains(key)) {
+        buckets[index].removeNode(key);
+        entries--;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function length() {
+    return entries;
+  }
+
+  function clear() {
+    buckets.forEach((bucket, index) => {
+      if (bucket != undefined) {
+        delete buckets[index];
+      }
+    });
+
+    entries = 0;
+  }
+
+  function display() {
+    let displayArray = buckets
+      .filter((bucket) => bucket != undefined)
+      .map((bucket) => bucket.getHead());
+
+    return displayArray;
+  }
+
   return {
     set,
     get,
     has,
+    remove,
+    length,
+    clear,
+    display,
   };
 }
 
