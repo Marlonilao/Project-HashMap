@@ -1,3 +1,20 @@
 import { HashMap } from "./hashMap.js";
 
-const myHash = HashMap(16);
+const test = HashMap(); // or new HashMap() if using a class
+
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+test.set("moon", "silver");
+test.set("moon", "silverEdge");
+
+console.log(test.getEntries());

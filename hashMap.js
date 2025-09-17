@@ -1,9 +1,8 @@
 import { LinkedList } from "./linkedList.js";
 
-function HashMap(size) {
-  let buckets = new Array(size);
-  let capacity = buckets.length;
-  let loadFactor = 0.8;
+function HashMap() {
+  let buckets = new Array(16);
+  let loadFactor = 0.75;
   let entries = 0;
 
   function hash(key) {
@@ -14,7 +13,7 @@ function HashMap(size) {
       hashCode = primeNumber * hashCode + key.charCodeAt(i);
     }
 
-    return hashCode % capacity;
+    return hashCode % buckets.length;
   }
 
   function set(key, value) {
@@ -32,10 +31,10 @@ function HashMap(size) {
       }
     }
 
-    const threshold = capacity * loadFactor;
+    let threshold = buckets.length * loadFactor;
     if (entries > threshold) {
-      const additional = new Array(buckets.length * 2);
-      buckets.push(additional);
+      const additional = new Array(buckets.length);
+      buckets = buckets.concat(additional);
     }
   }
 
@@ -50,7 +49,7 @@ function HashMap(size) {
 
   function has(key) {
     const index = hash(key);
-    if (buckets[index] != undefined) {
+    if (buckets[index] != null) {
       return true;
     } else {
       return false;
@@ -59,14 +58,17 @@ function HashMap(size) {
 
   function remove(key) {
     const index = hash(key);
-    if (buckets[index] != undefined) {
-      if (buckets[index].contains(key)) {
+    if (buckets[index] != null) {
+      if (buckets[index].getSize() <= 1) {
+        delete buckets[index];
+        entries--;
+      } else {
         buckets[index].removeNode(key);
         entries--;
-        return true;
       }
+    } else {
+      return "key undefined";
     }
-    return false;
   }
 
   function length() {
@@ -83,12 +85,35 @@ function HashMap(size) {
     entries = 0;
   }
 
-  function display() {
-    let displayArray = buckets
-      .filter((bucket) => bucket != undefined)
-      .map((bucket) => bucket.getHead());
+  function keys() {
+    let keysArray = [];
+    let filtered = buckets.filter((bucket) => bucket != undefined);
+    filtered.forEach((bucket) => {
+      keysArray = keysArray.concat(bucket.getKeys());
+    });
+    return keysArray;
+  }
 
-    return displayArray;
+  function values() {
+    let valuesArray = [];
+    let filtered = buckets.filter((bucket) => bucket != undefined);
+    filtered.forEach((bucket) => {
+      valuesArray = valuesArray.concat(bucket.getValues());
+    });
+    return valuesArray;
+  }
+
+  function getEntries() {
+    let entriesArray = [];
+    let filtered = buckets.filter((bucket) => bucket != undefined);
+    filtered.forEach((bucket) => {
+      entriesArray = entriesArray.concat(bucket.getKeyValue());
+    });
+    return entriesArray;
+  }
+
+  function getBuckets() {
+    return buckets.length;
   }
 
   return {
@@ -98,7 +123,10 @@ function HashMap(size) {
     remove,
     length,
     clear,
-    display,
+    keys,
+    values,
+    getEntries,
+    getBuckets,
   };
 }
 

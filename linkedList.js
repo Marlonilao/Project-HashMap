@@ -35,69 +35,6 @@ function LinkedList() {
     size++;
   }
 
-  function getSize() {
-    return size;
-  }
-
-  function getHead() {
-    return head;
-  }
-
-  function getTail() {
-    if (head == null) {
-      return "List is empty";
-    } else {
-      let current = head;
-      while (current.next != null) {
-        current = current.next;
-      }
-
-      return current;
-    }
-  }
-
-  // function at(index) {
-  //   if (index == 0) {
-  //     return `key: ${head.key}, value: ${head.value}`;
-  //   }
-
-  //   if (index >= size) {
-  //     return null;
-  //   }
-
-  //   let current = head;
-  //   let count = 0;
-  //   while (count < index) {
-  //     current = current.next;
-  //     count++;
-  //   }
-  //   return `key: ${current.key}, value: ${current.value}`;
-  // }
-
-  function pop() {
-    if (head == null) {
-      return false;
-    }
-    let current = head;
-    let previous;
-
-    if (head != null) {
-      if (head.next == null) {
-        head = null;
-        return current;
-      }
-    }
-
-    while (current.next != null) {
-      previous = current;
-      current = current.next;
-    }
-
-    previous.next = null;
-    size--;
-    return current;
-  }
-
   function contains(key) {
     if (head == null) {
       return false;
@@ -111,92 +48,6 @@ function LinkedList() {
     }
     return false;
   }
-
-  function find(key) {
-    let current = head;
-    let index = 0;
-    while (current) {
-      if (current.key == key) {
-        return index;
-      }
-      current = current.next;
-      index++;
-    }
-    return null;
-  }
-
-  function toString() {
-    if (head == null) {
-      return "null";
-    }
-
-    let current = head;
-    let string = "";
-
-    while (current.next != null) {
-      string += `( ${current.value} ) -> `;
-      current = current.next;
-    }
-
-    string += `( ${current.value} ) -> null`;
-    return string;
-  }
-
-  // function insertAt(value, index) {
-  //   if (index == 0) {
-  //     prepend(value);
-  //     return;
-  //   } else if (index == size) {
-  //     append(value);
-  //     return;
-  //   } else if (index > size) {
-  //     return "index out of range";
-  //   } else {
-  //     const node = Node(value);
-  //     let current = head;
-  //     let previous;
-  //     let count = 0;
-
-  //     while (count < index) {
-  //       previous = current;
-  //       current = current.next;
-  //       count++;
-  //     }
-
-  //     previous.next = node;
-  //     node.next = current;
-  //     size++;
-  //   }
-  // }
-
-  // function removeAt(index) {
-  //   if (index >= size || index < 0) {
-  //     return "index out of range";
-  //   }
-
-  //   let current = head;
-  //   let previous;
-  //   let count = 0;
-
-  //   if (index == 0 && head != null) {
-  //     head = current.next;
-  //     size--;
-  //     return;
-  //   }
-
-  //   if (index == 0 && head == null) {
-  //     return "list is empty";
-  //   }
-
-  //   while (count < index) {
-  //     previous = current;
-  //     current = current.next;
-  //     count++;
-  //   }
-
-  //   previous.next = current.next;
-  //   size--;
-  // }
 
   function update(key, newValue) {
     if (head.key == key) {
@@ -235,29 +86,58 @@ function LinkedList() {
 
       while (current.key != key) {
         previous = current;
-        current.next = current;
+        current = current.next;
       }
 
       previous.next = current.next;
     }
   }
 
+  function getKeys() {
+    let keys = [];
+    let current = head;
+    while (current != null) {
+      keys.push(current.key);
+      current = current.next;
+    }
+    return keys;
+  }
+
+  function getValues() {
+    let values = [];
+    let current = head;
+    while (current != null) {
+      values.push(current.value);
+      current = current.next;
+    }
+    return values;
+  }
+
+  function getKeyValue() {
+    let keyValueArray = [];
+    let current = head;
+    while (current != null) {
+      keyValueArray.push([current.key, current.value]);
+      current = current.next;
+    }
+
+    return keyValueArray;
+  }
+
+  function getSize() {
+    return size;
+  }
+
   return {
     append,
-    prepend,
-    getSize,
-    getHead,
-    getTail,
-    // at,
-    pop,
     contains,
-    find,
-    toString,
-    // insertAt,
-    // removeAt,
     update,
     getValue,
     removeNode,
+    getKeys,
+    getValues,
+    getKeyValue,
+    getSize,
   };
 }
 
